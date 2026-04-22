@@ -1,0 +1,427 @@
+<!-- ============================================================
+     AURUM v5 — PART 3: HTML MARKUP
+     All screens · nav · modals
+     Usage: paste inside <body><div id="app">…</div></body>
+     Requires: part1.css, part2.css loaded in <head>
+     ============================================================ -->
+
+<!-- ══════ HOME ══════ -->
+<div id="home" class="screen on">
+  <div class="hh a d1">
+    <div class="hh-l"><h1>Today</h1><p id="hDate"></p></div>
+    <div class="ava" onclick="goTo('settings')">✦</div>
+  </div>
+
+  <div id="suggestBar" class="suggest-bar a d1" style="display:none" onclick="openAdd(suggestMeal)">
+    <span class="sb-ic" id="sbIc">🍳</span>
+    <span class="sb-txt">Time to log <b id="sbMeal">Breakfast</b></span>
+    <span class="sb-act">+ Log</span>
+  </div>
+
+  <div class="hero a d2">
+    <div class="hero-shine"></div><div class="hero-glow"></div>
+    <div class="hero-glow2"></div><div class="hero-sweep"></div>
+    <div class="hero-top">
+      <div class="rw">
+        <svg viewBox="0 0 124 124">
+          <defs>
+            <linearGradient id="grd" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#C8A84B"/>
+              <stop offset="100%" stop-color="#F4DFA0"/>
+            </linearGradient>
+          </defs>
+          <circle class="r-bg" cx="62" cy="62" r="53"/>
+          <circle class="r-over" id="rOv" cx="62" cy="62" r="53"/>
+          <circle class="r-p" id="rPr" cx="62" cy="62" r="53"/>
+        </svg>
+        <div class="ri">
+          <div class="ri-n" id="rN">0</div>
+          <div class="ri-l">kcal</div>
+        </div>
+      </div>
+      <div class="hs">
+        <div class="hs-rl">Remaining</div>
+        <div class="hs-rn" id="remN">2000</div>
+        <div class="hs-ru">calories left</div>
+        <div class="hs-g">Goal <b id="gDisp">2,000</b> kcal</div>
+        <div class="net-cal" id="netCal" style="display:none">⚡ Net: — kcal</div>
+      </div>
+    </div>
+    <div class="mstrip">
+      <div class="mc">
+        <div class="mc-v" id="mP" style="color:var(--P)">0g</div>
+        <div class="mc-l">Protein</div>
+        <div class="mc-b"><div class="mc-bf" id="bP" style="background:var(--P)"></div></div>
+      </div>
+      <div class="mc">
+        <div class="mc-v" id="mC" style="color:var(--C)">0g</div>
+        <div class="mc-l">Carbs</div>
+        <div class="mc-b"><div class="mc-bf" id="bC" style="background:var(--C)"></div></div>
+      </div>
+      <div class="mc">
+        <div class="mc-v" id="mF" style="color:var(--F)">0g</div>
+        <div class="mc-l">Fat</div>
+        <div class="mc-b"><div class="mc-bf" id="bF" style="background:var(--F)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="streak-card a d3">
+    <div class="sf">🔥</div>
+    <div class="si">
+      <div class="si-n" id="stN">0</div>
+      <div class="si-l">Day Streak</div>
+      <div class="si-w" id="stW"></div>
+    </div>
+    <canvas id="miniSpk" width="70" height="40"></canvas>
+  </div>
+
+  <div class="budget-row a d3" id="budgetRow"></div>
+
+  <div class="trio a d3">
+    <div class="tc" onclick="openWater()">
+      <div class="tc-ic">💧</div>
+      <div class="tc-v" id="tcW" style="color:var(--W)">0</div>
+      <div class="tc-l">Water</div>
+      <div class="tc-bar"><div class="tc-bf" id="wBf" style="background:var(--W)"></div></div>
+    </div>
+    <div class="tc" onclick="openExercise()">
+      <div class="tc-ic">🏃</div>
+      <div class="tc-v" id="tcEx" style="color:var(--green)">0</div>
+      <div class="tc-l">Burned</div>
+      <div class="tc-bar"><div class="tc-bf" id="exBf" style="background:var(--green)"></div></div>
+    </div>
+    <div class="tc">
+      <div class="tc-ic">⚡</div>
+      <div class="tc-v" id="tcS" style="color:var(--gold)">—</div>
+      <div class="tc-l">Score</div>
+      <div class="tc-bar"><div class="tc-bf" id="sBf" style="background:var(--gold)"></div></div>
+    </div>
+  </div>
+
+  <div class="xrow a d4" id="xRow" style="display:none">
+    <div class="xc">
+      <div class="xc-v" id="xSu" style="color:var(--Su)">0g</div>
+      <div class="xc-l">Sugar</div>
+      <div class="xc-b"><div class="xc-bf" id="xSuB" style="background:var(--Su)"></div></div>
+    </div>
+    <div class="xc">
+      <div class="xc-v" id="xFi" style="color:var(--green)">0g</div>
+      <div class="xc-l">Fiber</div>
+      <div class="xc-b"><div class="xc-bf" id="xFiB" style="background:var(--green)"></div></div>
+    </div>
+    <div class="xc">
+      <div class="xc-v" id="xSo">0mg</div>
+      <div class="xc-l">Sodium</div>
+      <div class="xc-b"><div class="xc-bf" id="xSoB" style="background:var(--t1)"></div></div>
+    </div>
+  </div>
+
+  <div class="meals-sec a d5">
+    <div class="slbl">Meals</div>
+    <div class="meal-actions">
+      <div class="ma-btn gold" onclick="repeatLastMeal()">↺ Repeat Yesterday</div>
+      <div class="ma-btn" onclick="copyYesterday()">📋 Copy Day</div>
+    </div>
+    <div id="mgWrap"></div>
+  </div>
+  <div class="pb"></div>
+</div>
+
+<!-- ══════ PROGRESS ══════ -->
+<div id="progress" class="screen">
+  <div class="ph a d1"><h2>Progress</h2><p>Weekly overview</p></div>
+
+  <div class="cc a d2">
+    <div class="cc-shine"></div>
+    <div class="cc-t-row">
+      <div class="cc-t">Calorie Trend</div>
+      <div class="chart-toggle">
+        <div class="ct-btn on" id="ct7" onclick="setChartRange(7)">7D</div>
+        <div class="ct-btn" id="ct30" onclick="setChartRange(30)">30D</div>
+      </div>
+    </div>
+    <div class="lc-wrap"><canvas id="lineC" class="lc"></canvas></div>
+    <div class="lc-xaxis" id="lcX"></div>
+  </div>
+
+  <div class="cc a d2">
+    <div class="cc-shine"></div>
+    <div class="cc-t">Today's Macro Progress</div>
+    <div class="hbar-list" id="hbarList"></div>
+  </div>
+
+  <div class="cc a d3">
+    <div class="cc-shine"></div>
+    <div class="cc-t">Macro Ratio</div>
+    <div class="donut-row">
+      <div class="donut-wrap">
+        <canvas id="donutC" width="104" height="104"></canvas>
+        <div class="d-ctr">
+          <div class="d-cn" id="dCn">0</div>
+          <div class="d-cl">kcal</div>
+        </div>
+      </div>
+      <div class="d-leg">
+        <div class="dl-r"><div class="dl-d" style="background:var(--P)"></div><div class="dl-n">Protein</div><div class="dl-v" id="dlP" style="color:var(--P)">—</div><div class="dl-p" id="dlPp"></div></div>
+        <div class="dl-r"><div class="dl-d" style="background:var(--C)"></div><div class="dl-n">Carbs</div><div class="dl-v" id="dlC" style="color:var(--C)">—</div><div class="dl-p" id="dlCp"></div></div>
+        <div class="dl-r"><div class="dl-d" style="background:var(--F)"></div><div class="dl-n">Fat</div><div class="dl-v" id="dlF" style="color:var(--F)">—</div><div class="dl-p" id="dlFp"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc a d3">
+    <div class="cc-shine"></div>
+    <div class="cc-t">Macro Gauges</div>
+    <div class="gauge-row">
+      <div class="gauge-item">
+        <div class="gw">
+          <svg viewBox="0 0 64 64"><circle class="g-bg" cx="32" cy="32" r="26"/><circle class="g-fill" id="gP" cx="32" cy="32" r="26" stroke="var(--P)" style="filter:drop-shadow(0 0 5px rgba(106,166,198,.5))"></circle></svg>
+          <div class="g-lbl" id="gPl" style="color:var(--P)">0%</div>
+        </div>
+        <div class="g-nm">Protein</div><div class="g-sub" id="gPs">0/0g</div>
+      </div>
+      <div class="gauge-item">
+        <div class="gw">
+          <svg viewBox="0 0 64 64"><circle class="g-bg" cx="32" cy="32" r="26"/><circle class="g-fill" id="gC" cx="32" cy="32" r="26" stroke="var(--C)" style="filter:drop-shadow(0 0 5px rgba(194,127,82,.5))"></circle></svg>
+          <div class="g-lbl" id="gCl" style="color:var(--C)">0%</div>
+        </div>
+        <div class="g-nm">Carbs</div><div class="g-sub" id="gCs">0/0g</div>
+      </div>
+      <div class="gauge-item">
+        <div class="gw">
+          <svg viewBox="0 0 64 64"><circle class="g-bg" cx="32" cy="32" r="26"/><circle class="g-fill" id="gF" cx="32" cy="32" r="26" stroke="var(--F)" style="filter:drop-shadow(0 0 5px rgba(150,122,190,.5))"></circle></svg>
+          <div class="g-lbl" id="gFl" style="color:var(--F)">0%</div>
+        </div>
+        <div class="g-nm">Fat</div><div class="g-sub" id="gFs">0/0g</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc a d4">
+    <div class="cc-shine"></div>
+    <div class="cc-t">Weight Trend</div>
+    <div id="wtArea">
+      <div class="wt-empty" id="wtEmpty">No weight entries yet — log your weight in Goals</div>
+      <canvas id="wtC" class="wtC" style="display:none"></canvas>
+      <div class="wt-xaxis" id="wtX" style="display:none"></div>
+      <div class="wt-stats" id="wtStats" style="display:none">
+        <div class="wt-s"><div class="wt-sv" id="wtCur">—</div><div class="wt-sl">Current</div></div>
+        <div class="wt-s"><div class="wt-sv" id="wtChg" style="color:var(--green)">—</div><div class="wt-sl">Change</div></div>
+        <div class="wt-s"><div class="wt-sv" id="wtAvg">—</div><div class="wt-sl">Average</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg a d4">
+    <div class="sc"><div class="sc-l">Avg Calories</div><div class="sc-v" id="scAvg">—</div><div class="sc-u">kcal / day</div></div>
+    <div class="sc"><div class="sc-l">Streak</div><div class="sc-v" id="scSt" style="color:var(--gold)">0</div><div class="sc-u">days</div></div>
+    <div class="sc"><div class="sc-l">Best Protein</div><div class="sc-v" id="scBP">—</div><div class="sc-u">grams</div></div>
+    <div class="sc"><div class="sc-l">Goals Hit</div><div class="sc-v" id="scGH" style="color:var(--green)">0</div><div class="sc-u">this week</div></div>
+  </div>
+
+  <div class="cal-cc a d5">
+    <div class="cc-t">Consistency · 4 Weeks</div>
+    <div class="cal-g" id="calG"></div>
+  </div>
+  <div class="pb"></div>
+</div>
+
+<!-- ══════ FOODS ══════ -->
+<div id="foods" class="screen">
+  <div class="fh a d1"><h2>My Foods</h2></div>
+  <div class="srch a d2">
+    <span class="srch-i">⌕</span>
+    <input type="text" id="fdSrch" placeholder="Search saved foods…" oninput="renderFD()">
+  </div>
+  <div class="cats a d3" id="catRow"></div>
+  <div class="fl a d4" id="fdList"></div>
+  <div class="pb"></div>
+</div>
+
+<!-- ══════ SETTINGS ══════ -->
+<div id="settings" class="screen">
+  <div class="seth a d1"><h2>Settings</h2></div>
+
+  <div class="setsec a d2">
+    <div class="slbl">Daily Goals</div>
+    <div class="gg">
+      <div class="gi"><label>Calories</label><input type="number" id="gCal" inputmode="numeric"></div>
+      <div class="gi"><label>Protein (g)</label><input type="number" id="gProt" inputmode="decimal"></div>
+      <div class="gi"><label>Carbs (g)</label><input type="number" id="gCarbs" inputmode="decimal"></div>
+      <div class="gi"><label>Fat (g)</label><input type="number" id="gFat" inputmode="decimal"></div>
+      <div class="gi"><label>Sugar (g)</label><input type="number" id="gSugar" inputmode="decimal"></div>
+      <div class="gi"><label>Fiber (g)</label><input type="number" id="gFiber" inputmode="decimal"></div>
+      <div class="gi"><label>Sodium (mg)</label><input type="number" id="gSodium" inputmode="numeric"></div>
+      <div class="gi"><label>Water (glasses)</label><input type="number" id="gWater" inputmode="numeric"></div>
+    </div>
+    <button class="sbtn" onclick="saveGoals()">Save Goals</button>
+  </div>
+
+  <div class="setsec a d2">
+    <div class="slbl">BMR / TDEE Calculator</div>
+    <div class="gg">
+      <div class="gi"><label>Age</label><input type="number" id="bmrAge" inputmode="numeric" placeholder="25"></div>
+      <div class="gi"><label>Weight (kg)</label><input type="number" id="bmrWt" inputmode="decimal" placeholder="70" oninput="logWeight()"></div>
+      <div class="gi"><label>Height (cm)</label><input type="number" id="bmrHt" inputmode="numeric" placeholder="175"></div>
+      <div class="gi"><label>Sex</label>
+        <select id="bmrSex"><option value="m">Male</option><option value="f">Female</option></select>
+      </div>
+    </div>
+    <div class="ff" style="margin-top:8px">
+      <label>Activity Level</label>
+      <select id="bmrAct">
+        <option value="1.2">Sedentary (desk job)</option>
+        <option value="1.375">Light (1-3x/week)</option>
+        <option value="1.55" selected>Moderate (3-5x/week)</option>
+        <option value="1.725">Active (6-7x/week)</option>
+        <option value="1.9">Very Active (athlete)</option>
+      </select>
+    </div>
+    <button class="sbtn" onclick="calcBMR()">Calculate BMR & TDEE</button>
+    <div class="bmr-card" id="bmrCard">
+      <div class="bmr-row"><span class="bmr-lbl">BMR (Base rate)</span><span class="bmr-val" id="bmrV">—</span></div>
+      <div class="bmr-row"><span class="bmr-lbl">TDEE (With activity)</span><span class="bmr-val" id="tdeeV">—</span></div>
+      <div class="bmr-row"><span class="bmr-lbl">Cut (−500 kcal)</span><span class="bmr-val" id="cutV">—</span></div>
+      <div class="bmr-row"><span class="bmr-lbl">Bulk (+300 kcal)</span><span class="bmr-val" id="bulkV">—</span></div>
+    </div>
+  </div>
+
+  <div class="setsec a d3">
+    <div class="slbl">Track Nutrients</div>
+    <div class="setg">
+      <div class="setr"><span class="setr-ic">🍬</span><span class="setr-l">Sugar</span><div class="tog" id="tSu" onclick="tPref('sugar',this)"></div></div>
+      <div class="setr"><span class="setr-ic">🌾</span><span class="setr-l">Fiber</span><div class="tog" id="tFi" onclick="tPref('fiber',this)"></div></div>
+      <div class="setr"><span class="setr-ic">🧂</span><span class="setr-l">Sodium</span><div class="tog" id="tSo" onclick="tPref('sodium',this)"></div></div>
+      <div class="setr"><span class="setr-ic">💧</span><span class="setr-l">Water</span><div class="tog on" id="tWa" onclick="tPref('water',this)"></div></div>
+    </div>
+  </div>
+
+  <div class="setsec a d4">
+    <div class="slbl">Data</div>
+    <div class="setg">
+      <div class="setr" onclick="clearToday()"><span class="setr-ic">🗑</span><span class="setr-l">Clear Today</span><span class="setr-v" style="color:var(--red)">Clear</span></div>
+      <div class="setr" onclick="clearFoods()"><span class="setr-ic">📦</span><span class="setr-l">Clear My Foods</span><span class="setr-v" style="color:var(--red)">Clear</span></div>
+      <div class="setr" onclick="clearStreak()"><span class="setr-ic">🔥</span><span class="setr-l">Reset Streak</span><span class="setr-v" style="color:var(--red)">Reset</span></div>
+      <div class="setr"><span class="setr-ic">✦</span><span class="setr-l">AURUM Version</span><span class="setr-v">5.0</span></div>
+    </div>
+  </div>
+  <div class="pb"></div>
+</div>
+
+<!-- ══════ NAV ══════ -->
+<nav class="nav">
+  <div class="ni on" id="n-home" onclick="goTo('home')"><div class="ni-ic">⊞</div><div class="ni-lb">Home</div></div>
+  <div class="ni" id="n-progress" onclick="goTo('progress')"><div class="ni-ic">📈</div><div class="ni-lb">Progress</div></div>
+  <button class="fab" onclick="openAdd()">+</button>
+  <div class="ni" id="n-foods" onclick="goTo('foods')"><div class="ni-ic">🍽</div><div class="ni-lb">Foods</div></div>
+  <div class="ni" id="n-settings" onclick="goTo('settings')"><div class="ni-ic">⚙</div><div class="ni-lb">Goals</div></div>
+</nav>
+
+<!-- ══════ ADD FOOD MODAL ══════ -->
+<div class="ov" id="addOv" onclick="bgC(event,'addOv')">
+  <div class="sh">
+    <div class="sh-h"></div>
+    <div class="sh-t">Log Food</div>
+    <div class="tabs">
+      <div class="tab on" onclick="mTab('c',0)">Custom</div>
+      <div class="tab" onclick="mTab('r',1)">Recent</div>
+      <div class="tab" onclick="mTab('m',2)">My Foods</div>
+    </div>
+    <div id="tC">
+      <div class="ff"><label>Food Name</label><input type="text" id="mNm" placeholder="e.g. Grilled Chicken" autocomplete="off" oninput="onNm()"></div>
+      <div class="ac" id="acBox"></div>
+      <div class="ff"><label>Icon</label><div class="ep-rw" id="epRw"></div></div>
+      <div class="ff"><label>Add to Meal</label><div class="ms-g" id="msG"></div></div>
+      <div class="g2">
+        <div class="ff"><label>Amount</label><input type="number" id="mAmt" placeholder="100" inputmode="decimal" oninput="autoSc()"></div>
+        <div class="ff"><label>Unit</label>
+          <select id="mUnit" onchange="autoSc()">
+            <option value="g">g — grams</option><option value="ml">ml</option>
+            <option value="oz">oz</option><option value="lb">lb</option>
+            <option value="L">L — litres</option><option value="cup">cup</option>
+            <option value="tbsp">tbsp</option><option value="tsp">tsp</option>
+            <option value="piece">piece</option><option value="serving">serving</option>
+          </select>
+        </div>
+      </div>
+      <div class="ff"><label>Calories (kcal)</label><input type="number" id="mKc" placeholder="0" inputmode="numeric"></div>
+      <div class="g3">
+        <div class="ff"><label>Protein (g)</label><input type="number" id="mPr" placeholder="0" inputmode="decimal"></div>
+        <div class="ff"><label>Carbs (g)</label><input type="number" id="mCr" placeholder="0" inputmode="decimal"></div>
+        <div class="ff"><label>Fat (g)</label><input type="number" id="mFt" placeholder="0" inputmode="decimal"></div>
+      </div>
+      <div class="g3">
+        <div class="ff"><label>Sugar (g)</label><input type="number" id="mSu" placeholder="0" inputmode="decimal"></div>
+        <div class="ff"><label>Fiber (g)</label><input type="number" id="mFi" placeholder="0" inputmode="decimal"></div>
+        <div class="ff"><label>Sodium (mg)</label><input type="number" id="mSo" placeholder="0" inputmode="numeric"></div>
+      </div>
+      <div class="stg-rw">
+        <div class="tog on" id="togSv" onclick="this.classList.toggle('on')"></div>
+        <span class="stg-l">Save to My Foods library</span>
+      </div>
+    </div>
+    <div id="tR" style="display:none"><div class="ql" id="rQL"></div></div>
+    <div id="tM" style="display:none">
+      <div class="srch" style="margin:0 0 9px">
+        <span class="srch-i">⌕</span>
+        <input type="text" id="mySrch" placeholder="Search…" oninput="renderMyM()" style="flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px">
+      </div>
+      <div class="ql" id="myQL"></div>
+    </div>
+    <div class="mact" id="cAct">
+      <button class="bc" onclick="closeAdd()">Cancel</button>
+      <button class="bs" onclick="logFood()">Log It</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ WATER MODAL ══════ -->
+<div class="ov" id="wOv" onclick="bgC(event,'wOv')">
+  <div class="sh">
+    <div class="sh-h"></div>
+    <div class="sh-t">Water Intake 💧</div>
+    <div class="ff"><label>Glasses today</label><input type="number" id="wInp" inputmode="decimal" placeholder="0"></div>
+    <div class="w-g">
+      <button class="wb" onclick="wA(1)">+1 glass</button>
+      <button class="wb" onclick="wA(2)">+2 glasses</button>
+      <button class="wb" onclick="wA(.5)">+½ glass</button>
+      <button class="wb" onclick="wA(250/237)">+250 ml</button>
+      <button class="wb" onclick="wA(500/237)">+500 ml</button>
+      <button class="wb" onclick="wA(1000/237)">+1 L</button>
+    </div>
+    <div class="mact">
+      <button class="bc" onclick="clOv('wOv')">Cancel</button>
+      <button class="bs" onclick="svWater()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ EXERCISE MODAL ══════ -->
+<div class="ov" id="exOv" onclick="bgC(event,'exOv')">
+  <div class="sh">
+    <div class="sh-h"></div>
+    <div class="sh-t">Log Exercise 🏃</div>
+    <div class="ff"><label>Activity</label><input type="text" id="exNm" placeholder="e.g. Running, Gym" autocomplete="off"></div>
+    <div class="ex-presets">
+      <div class="ex-chip" onclick="fillEx('Running',500)">🏃 Running</div>
+      <div class="ex-chip" onclick="fillEx('Walking',200)">🚶 Walking</div>
+      <div class="ex-chip" onclick="fillEx('Cycling',400)">🚴 Cycling</div>
+      <div class="ex-chip" onclick="fillEx('Gym',350)">🏋️ Gym</div>
+      <div class="ex-chip" onclick="fillEx('Swimming',450)">🏊 Swimming</div>
+      <div class="ex-chip" onclick="fillEx('HIIT',600)">⚡ HIIT</div>
+      <div class="ex-chip" onclick="fillEx('Yoga',150)">🧘 Yoga</div>
+      <div class="ex-chip" onclick="fillEx('Basketball',450)">🏀 Basketball</div>
+    </div>
+    <div class="g2">
+      <div class="ff"><label>Duration (min)</label><input type="number" id="exDur" placeholder="30" inputmode="numeric" oninput="calcExCal()"></div>
+      <div class="ff"><label>Calories Burned</label><input type="number" id="exCal" placeholder="0" inputmode="numeric"></div>
+    </div>
+    <div class="mact">
+      <button class="bc" onclick="clOv('exOv')">Cancel</button>
+      <button class="bs" onclick="svExercise()">Log Exercise</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
